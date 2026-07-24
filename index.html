@@ -1,0 +1,181 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="David Lee Wise / ROOT0 / TriPod LLC">
+<title>THE RECEPTIVE FIELD · AÍSTHĒSIS · UD0</title>
+<style>
+*{box-sizing:border-box}
+:root{--sense:#ff7a6a;--sense2:#e25640;--neuro:#12b3c8;--neuro2:#0c8595;--synapse:#7b6cf0;--synapse2:#5a4bd0;
+  --ink:#1c2530;--dim:#5f6b7a;--grn:#1fae74;--panel:rgba(255,255,255,.66);--edge:rgba(18,179,200,.28);--edge2:rgba(18,179,200,.13)}
+html,body{margin:0;height:100%}
+body{background:#eaeff5;color:var(--ink);font:15px/1.55 'Segoe UI',system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+#bg{position:fixed;inset:0;width:100vw;height:100vh;z-index:0;display:block}
+.desk{position:relative;z-index:2;max-width:900px;margin:0 auto;padding:24px 16px 56px}
+.dtag{font:600 11px/1 ui-monospace,'Cascadia Code','Segoe UI Mono',monospace;letter-spacing:.32em;text-transform:uppercase;color:var(--neuro2)}
+.dtag b{color:var(--sense)}
+h1{margin:.35em 0 .1em;font-size:clamp(26px,4.6vw,42px);font-weight:800;letter-spacing:.01em;color:#16202b}
+.sub{color:var(--dim);max-width:66ch;margin:.2em 0 0}
+.drag{display:inline-block;margin-left:10px;font:700 10px/1 ui-monospace,monospace;letter-spacing:.14em;color:var(--neuro2);border:1px solid var(--neuro);border-radius:999px;padding:4px 9px;vertical-align:middle;white-space:nowrap;box-shadow:0 0 12px rgba(18,179,200,.25)}
+.tier{display:inline-flex;gap:6px;align-items:center;margin-top:14px;font:600 11px/1 ui-monospace,monospace;letter-spacing:.14em}
+.chip{padding:5px 10px;border-radius:999px;border:1px solid var(--edge);background:var(--panel)}
+.chip.lit{color:var(--grn);border-color:rgba(31,174,116,.4)}
+.chip.amb{color:var(--sense2);border-color:rgba(226,86,64,.45)}
+.card{margin-top:20px;background:var(--panel);border:1px solid var(--edge);border-radius:16px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 14px 46px rgba(20,60,90,.14),0 0 0 1px rgba(255,255,255,.4) inset}
+.stagewrap{padding:14px;position:relative}
+#stage{width:100%;height:auto;display:block;border-radius:10px;background:radial-gradient(120% 100% at 50% 0%,#0e1c2c 0%,#081221 60%,#050c17 100%);border:1px solid rgba(18,179,200,.35);box-shadow:0 0 34px rgba(18,179,200,.16) inset,0 0 18px rgba(123,108,240,.12);touch-action:none;cursor:crosshair}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:0 14px 14px}
+.btn{cursor:pointer;border:1px solid var(--edge);background:rgba(255,255,255,.7);color:var(--ink);padding:9px 14px;border-radius:10px;font:600 12px/1 ui-monospace,'Cascadia Code',monospace;letter-spacing:.06em;text-transform:uppercase;transition:.15s}
+.btn:hover{border-color:var(--neuro);box-shadow:0 0 15px rgba(18,179,200,.3)}
+.btn.on{background:linear-gradient(180deg,#18c6dc,#0c8595);border-color:#0c8595;color:#fff;box-shadow:0 0 16px rgba(18,179,200,.4)}
+.rng{display:flex;align-items:center;gap:8px;font:600 11px ui-monospace,monospace;letter-spacing:.05em;text-transform:uppercase;color:var(--dim);background:rgba(255,255,255,.7);border:1px solid var(--edge);border-radius:10px;padding:6px 12px}
+.rng b{color:var(--neuro2);min-width:2.6em;text-align:right;display:inline-block}
+input[type=range]{accent-color:var(--neuro);width:108px}
+.readout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--edge2);border-top:1px solid var(--edge);border-radius:0 0 16px 16px;overflow:hidden}
+.ro{background:var(--panel);padding:11px 14px}
+.ro .k{font:600 10px ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.ro .v{font:700 19px ui-monospace,monospace;margin-top:3px;color:var(--ink)}
+.ro .v.g{color:var(--grn)} .ro .v.r{color:var(--sense2)} .ro .v.a{color:var(--synapse2)} .ro .v.c{color:var(--neuro2)}
+.honesty{margin-top:22px;display:grid;gap:10px}
+.hz{background:var(--panel);border:1px solid var(--edge);border-left-width:3px;border-radius:10px;padding:12px 15px}
+.hz.lit{border-left-color:var(--grn)} .hz.amb{border-left-color:var(--sense)}
+.hz h4{margin:0 0 4px;font:700 11px ui-monospace,monospace;letter-spacing:.16em}
+.hz.lit h4{color:var(--grn)} .hz.amb h4{color:var(--sense2)}
+.hz p{margin:0;color:#33404e;font-size:13.5px}
+.law{margin-top:16px;text-align:center;color:var(--dim);font:italic 500 13px/1.5 Georgia,serif}
+.sig{margin-top:26px;text-align:center;color:var(--dim);font:600 11px ui-monospace,monospace;letter-spacing:.14em}
+.sig b{color:var(--ink)}
+#fail{display:none;position:fixed;left:12px;right:12px;bottom:12px;z-index:99;background:#0a1420;border:1px solid var(--sense);color:#ffd7d0;padding:12px;border-radius:8px;font:12px ui-monospace,monospace;white-space:pre-wrap}
+</style></head><body>
+<canvas id="bg"></canvas>
+<div class="desk">
+  <div class="dtag">◈ <b>AÍSTHĒSIS</b> · the perceiving brain · sense · relay · encode · bind</div>
+  <h1>THE RECEPTIVE FIELD <span class="drag">◈ DRAG · SLIDE · TAP</span></h1>
+  <p class="sub">A visual neuron doesn't report brightness — it reports <i>contrast</i>. Its centre says 'light here', its surround says 'but not there', and the difference sharpens every edge into a bright and dark band that isn't really in the world. <b>Drag</b> the edge, <b>slide</b> the surround, <b>flip</b> the polarity, and watch the Mach bands appear.</p>
+  <div class="tier"><span class="chip lit">◆ LIT</span><span class="chip amb">▲ AMBER</span></div>
+  <div class="card">
+    <div class="stagewrap"><canvas id="stage" width="900" height="440"></canvas></div>
+    <div class="controls"><button class="btn on" id="pol">◉ ON-centre</button><button class="btn" id="reset">↺</button><label class="rng">surround <input type="range" id="sur" min="0" max="100" value="70" step="1"><b id="surv">70</b>%</label></div>
+    <div class="readout"><div class="ro"><div class="k">edge position</div><div class="v" id="roEdge">—</div></div><div class="ro"><div class="k">peak response</div><div class="v" id="roPeak">—</div></div><div class="ro"><div class="k">undershoot</div><div class="v" id="roUnder">—</div></div><div class="ro"><div class="k">surround suppression</div><div class="v" id="roSupp">—</div></div><div class="ro"><div class="k">what it sees</div><div class="v" id="roState">—</div></div></div>
+  </div>
+  <div class="honesty">
+    <div class="hz lit"><h4>◆ LIT — verified / checkable</h4><p>Each neuron's <b>receptive field</b> is a Difference-of-Gaussians: a narrow excitatory centre minus a broad inhibitory surround (drag the surround strength). The response at every point is the luminance convolved with that kernel — computed live across the row. Slide an edge (dark→light) through it and the response <b>overshoots</b> just inside the bright side and <b>undershoots</b> just inside the dark side: <b>Mach bands</b>, the illusory bright/dark stripes at edges. Flip to OFF-centre and the whole response inverts. Real lateral-inhibition / centre-surround vision.</p></div>
+    <div class="hz amb"><h4>▲ AMBER — the figure</h4><p>A one-dimensional row of identical Difference-of-Gaussian cells stands in for a real retina/LGN (which is 2-D, has many cell sizes, adapts, and adds noise and nonlinearity). The mechanism shown — centre-surround convolution producing edge enhancement and Mach bands — is the exact, real model; the specific kernel widths are illustrative.</p></div>
+  </div>
+  <div class="law">AÍSTHĒSIS: the world does not arrive — it is gated, sharpened, and bound into the thing you call seeing.</div>
+  <div class="sig">David Lee Wise / ROOT0 / TriPod LLC &nbsp;·&nbsp; with <b>AVAN</b></div>
+</div>
+<div id="fail"></div>
+<script>
+window.onerror=function(m,s,l,c,e){var f=document.getElementById('fail');if(f){f.style.display='block';f.textContent='⚠ '+m+' @'+l+':'+c;}};
+</script>
+<script>
+(function(){
+  var cv=document.getElementById('bg'); if(!cv) return;
+  function fallback(){var c=cv.getContext&&cv.getContext('2d');if(!c)return;
+    function f(){var w=cv.width=innerWidth,h=cv.height=innerHeight;var g=c.createRadialGradient(w*.5,h*.4,0,w*.5,h*.4,Math.max(w,h)*.9);g.addColorStop(0,'#eef3f8');g.addColorStop(1,'#dde5ee');c.fillStyle=g;c.fillRect(0,0,w,h);}f();addEventListener('resize',f);}
+  var gl;try{gl=cv.getContext('webgl',{antialias:true,alpha:false})||cv.getContext('experimental-webgl');}catch(e){}
+  if(!gl){fallback();return;}
+  // build a neuron cloud + synapse edges (deterministic-ish pseudo-random)
+  var seed=1337; function rnd(){seed=(seed*1103515245+12345)&0x7fffffff;return seed/0x7fffffff;}
+  var N=46, nodes=[];
+  for(var i=0;i<N;i++){var u=rnd()*2-1,th=rnd()*6.283,r=Math.pow(rnd(),0.5);var s=Math.sqrt(1-u*u);nodes.push([Math.cos(th)*s*r,u*r,Math.sin(th)*s*r]);}
+  var edges=[], pts=[];
+  for(var i=0;i<N;i++){pts.push(nodes[i][0],nodes[i][1],nodes[i][2]);
+    for(var j=i+1;j<N;j++){var dx=nodes[i][0]-nodes[j][0],dy=nodes[i][1]-nodes[j][1],dz=nodes[i][2]-nodes[j][2];
+      if(dx*dx+dy*dy+dz*dz<0.34)edges.push(nodes[i][0],nodes[i][1],nodes[i][2],nodes[j][0],nodes[j][1],nodes[j][2]);}}
+  function buf(a){var b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(a),gl.STATIC_DRAW);return b;}
+  var bE=buf(edges), bP=buf(pts);
+  var VS='attribute vec3 p;uniform float asp,ang,sc;void main(){float c=cos(ang),s=sin(ang);vec3 q=vec3(p.x*c+p.z*s,p.y,-p.x*s+p.z*c);float persp=1.0/(2.3-q.z*0.55);vec2 o=vec2(q.x,q.y)*sc*persp;o.x/=asp;gl_Position=vec4(o,0.0,1.0);gl_PointSize=4.0;}';
+  var FS='precision mediump float;uniform vec3 col;uniform float a;void main(){gl_FragColor=vec4(col,a);}';
+  function sh(t,s){var o=gl.createShader(t);gl.shaderSource(o,s);gl.compileShader(o);if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(o);return o;}
+  var prog;try{prog=gl.createProgram();gl.attachShader(prog,sh(gl.VERTEX_SHADER,VS));gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,FS));gl.linkProgram(prog);if(!gl.getProgramParameter(prog,gl.LINK_STATUS))throw'link';}catch(e){fallback();return;}
+  var uAsp=gl.getUniformLocation(prog,'asp'),uAng=gl.getUniformLocation(prog,'ang'),uSc=gl.getUniformLocation(prog,'sc'),uCol=gl.getUniformLocation(prog,'col'),uA=gl.getUniformLocation(prog,'a'),aLoc=gl.getAttribLocation(prog,'p');
+  gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);
+  var ASP=1,t0=null;
+  function frame(tm){requestAnimationFrame(frame);if(t0===null)t0=tm;var tt=(tm-t0)*0.001;
+    var w=cv.width=innerWidth,h=cv.height=innerHeight;gl.viewport(0,0,w,h);ASP=w/h;
+    gl.clearColor(0.933,0.949,0.965,1.0);gl.clear(gl.COLOR_BUFFER_BIT);gl.useProgram(prog);
+    gl.uniform1f(uAsp,ASP);gl.uniform1f(uAng,tt*0.16);gl.uniform1f(uSc,0.72);
+    gl.bindBuffer(gl.ARRAY_BUFFER,bE);gl.enableVertexAttribArray(aLoc);gl.vertexAttribPointer(aLoc,3,gl.FLOAT,false,0,0);
+    gl.uniform3f(uCol,0.13,0.72,0.82);gl.uniform1f(uA,0.10);gl.lineWidth(1);gl.drawArrays(gl.LINES,0,edges.length/3);
+    gl.bindBuffer(gl.ARRAY_BUFFER,bP);gl.vertexAttribPointer(aLoc,3,gl.FLOAT,false,0,0);
+    gl.uniform3f(uCol,0.55,0.49,0.94);gl.uniform1f(uA,0.5);gl.drawArrays(gl.POINTS,0,pts.length/3);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+<script>
+(function(){
+  var cv=document.getElementById('stage'); var ctx=cv&&cv.getContext('2d'); if(!ctx)return;
+  var DPR=Math.min(window.devicePixelRatio||1,2);
+  function size(){var w=cv.clientWidth||900;cv.width=Math.round(w*DPR);cv.height=Math.round((w*440/900)*DPR);}
+  size(); addEventListener('resize',size);
+  var env={cv:cv,ctx:ctx,DPR:DPR,W:function(){return cv.width/DPR;},H:function(){return cv.height/DPR;},
+    set:function(id,val,cls){var e=document.getElementById(id);if(e){e.textContent=val;if(cls!=null)e.className='v '+cls;}},
+    evt:function(e){var r=cv.getBoundingClientRect();var sx=(cv.width/DPR)/r.width, sy=(cv.height/DPR)/r.height;
+      var cx=(e.touches?e.touches[0].clientX:e.clientX), cy=(e.touches?e.touches[0].clientY:e.clientY);
+      return {x:(cx-r.left)*sx, y:(cy-r.top)*sy};}};
+  var t0=null, inited=false;
+  function loop(t){requestAnimationFrame(loop);if(t0===null)t0=t;env.t=(t-t0)*0.001;
+    if(!inited&&window.__INST__){inited=true;if(window.__INST__.init)window.__INST__.init(env);}
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+    if(window.__INST__&&window.__INST__.draw)window.__INST__.draw(env);}
+  requestAnimationFrame(loop);
+})();
+</script>
+<script>
+  function onDrag(env,pick,move){var handle=null;
+    function down(e){e.preventDefault();var p=env.evt(e);handle=pick(p);if(handle!=null)move(handle,p);}
+    function mv(e){if(handle==null)return;e.preventDefault();move(handle,env.evt(e));}
+    function up(){handle=null;}
+    env.cv.addEventListener('pointerdown',down);env.cv.addEventListener('pointermove',mv);
+    window.addEventListener('pointerup',up);env.cv.addEventListener('touchstart',down,{passive:false});env.cv.addEventListener('touchmove',mv,{passive:false});window.addEventListener('touchend',up);
+  }
+  function hud(c,w,h){ // faint grid + corner brackets on the dark screen
+    c.strokeStyle='rgba(18,179,200,0.08)';c.lineWidth=1;
+    for(var x=0;x<=w;x+=40){c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke();}
+    for(var y=0;y<=h;y+=40){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
+    c.strokeStyle='rgba(18,179,200,0.55)';c.lineWidth=1.5;var L=16;
+    var pts=[[8,8,1,1],[w-8,8,-1,1],[8,h-8,1,-1],[w-8,h-8,-1,-1]];
+    for(var i=0;i<4;i++){var q=pts[i];c.beginPath();c.moveTo(q[0],q[1]+q[3]*L);c.lineTo(q[0],q[1]);c.lineTo(q[0]+q[2]*L,q[1]);c.stroke();}
+  }
+
+(function(){
+  var edge=0.5, sur=0.7, on=true, ENV, NS=160;
+  function dog(d,sc,ss){return Math.exp(-d*d/(2*sc*sc)) - sur*(sc/ss)*Math.exp(-d*d/(2*ss*ss));}
+  function lumAt(x){return x<edge?0.15:0.85;} // the edge stimulus
+  function response(){var sc=0.018,ss=0.06,out=[];
+    for(var i=0;i<NS;i++){var x=i/(NS-1),s=0,norm=0;
+      for(var j=-24;j<=24;j++){var u=x+j/(NS-1);u=u<0?0:(u>1?1:u);var wgt=dog(j/(NS-1),sc,ss);s+=lumAt(u)*wgt;norm+=Math.abs(wgt);}
+      out.push((on?1:-1)*s/(norm||1));}
+    return out;}
+  function refresh(){if(!ENV)return;var r=response();var pk=-9,tr=9;for(var i=0;i<NS;i++){if(r[i]>pk)pk=r[i];if(r[i]<tr)tr=r[i];}
+    ENV.set('roEdge',(edge*100).toFixed(0)+'%','c');
+    ENV.set('roPeak',(pk>=0?'+':'')+pk.toFixed(2),pk>0?'g':'r');
+    ENV.set('roUnder',tr.toFixed(2),tr<0?'r':'a');
+    ENV.set('roSupp',(sur*100).toFixed(0)+'%','a');
+    ENV.set('roState',sur>0.35?'edges sharpened — Mach bands':'flat — no enhancement',sur>0.35?'g':'a');}
+  window.__INST__={init:function(env){ENV=env;
+    var pb=document.getElementById('pol');
+    pb.onclick=function(){on=!on;pb.textContent=on?'◉ ON-centre':'◎ OFF-centre';pb.classList.toggle('on',on);refresh();};
+    document.getElementById('reset').onclick=function(){edge=0.5;refresh();};
+    document.getElementById('sur').oninput=function(){sur=(+this.value)/100;document.getElementById('surv').textContent=this.value;refresh();};
+    onDrag(env,function(p){return 0;},function(i,p){edge=Math.max(0.08,Math.min(0.92,(p.x-40)/(env.W()-80)));refresh();});
+    refresh();},
+   draw:function(env){var c=env.ctx,w=env.W(),h=env.H();c.clearRect(0,0,w,h);hud(c,w,h);
+     var x0=40,pw=w-80,r=response();
+     // top: luminance (the edge)
+     var ty=30,tth=h*0.28;
+     for(var i=0;i<NS;i++){var x=x0+i/(NS-1)*pw;var g=Math.round(lumAt(i/(NS-1))*220+20);c.fillStyle='rgb('+g+','+g+','+(g+6)+')';c.fillRect(x,ty,pw/NS+1,tth);}
+     var ex=x0+edge*pw;c.strokeStyle='#ff7a6a';c.lineWidth=2;c.beginPath();c.moveTo(ex,ty-6);c.lineTo(ex,ty+tth+6);c.stroke();
+     c.fillStyle='#ff9d8a';c.font='600 10px ui-monospace,monospace';c.textAlign='center';c.fillText('drag the edge',ex,ty-10);
+     c.fillStyle='#8aa0b4';c.textAlign='left';c.fillText('STIMULUS  luminance',x0,ty-10);
+     // bottom: neuron response
+     var by=h-34,bh=h*0.34,mid=by-bh*0.5;
+     c.strokeStyle='rgba(140,160,180,.25)';c.lineWidth=1;c.beginPath();c.moveTo(x0,mid);c.lineTo(x0+pw,mid);c.stroke();
+     c.strokeStyle='#12b3c8';c.lineWidth=2;c.beginPath();for(var i=0;i<NS;i++){var x=x0+i/(NS-1)*pw,y=mid-r[i]*bh*0.5;i?c.lineTo(x,y):c.moveTo(x,y);}c.stroke();
+     c.fillStyle='rgba(18,179,200,.10)';c.beginPath();c.moveTo(x0,mid);for(var i=0;i<NS;i++){var x=x0+i/(NS-1)*pw,y=mid-r[i]*bh*0.5;c.lineTo(x,y);}c.lineTo(x0+pw,mid);c.fill();
+     c.fillStyle='#8aa0b4';c.font='600 10px ui-monospace,monospace';c.fillText('RESPONSE  centre − surround  (Mach bands at the edge)',x0,by+4);
+   }};
+})();
+</script>
+</body></html>
